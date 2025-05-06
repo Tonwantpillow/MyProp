@@ -16,9 +16,9 @@ class ItemWidget extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(
-        title: Text(item.title),
+        title: Text(item.owner),
         subtitle: Text(
-          item.description,
+          item.address,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),

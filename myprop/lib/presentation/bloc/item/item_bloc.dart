@@ -18,14 +18,19 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
     GetItemsEvent event,
     Emitter<ItemState> emit,
   ) async {
-    emit(ItemLoading());
+      emit(ItemLoading());
 
-    final result = await getItems(NoParams());
+      final result = await getItems(NoParams());
 
-    result.fold(
-      (failure) => emit(ItemError(_mapFailureToMessage(failure))),
-      (items) => emit(ItemsLoaded(items)),
-    );
+      result.fold(
+    (failure) {
+      final message = _mapFailureToMessage(failure);
+      emit(ItemError(message));
+    },
+    (items) {
+      emit(ItemsLoaded(items));
+    },
+  );
   }
 
   String _mapFailureToMessage (Failure failure) {

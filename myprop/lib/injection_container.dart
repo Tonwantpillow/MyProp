@@ -9,6 +9,7 @@ import 'package:myprop/domain/usecases/get_items.dart';
 import 'package:myprop/presentation/bloc/item/item_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 final sl = GetIt.instance;
 
@@ -31,10 +32,16 @@ Future<void> init() async {
       networkInfo: sl(),
     ),
   );
+  // External
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => sharedPreferences);
+  // sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(() => InternetConnectionChecker.createInstance());
 
+  sl.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
   // Data source
   sl.registerLazySingleton<RemoteDataSource>(
-    () => RemoteDataSourceImpl(client: sl()),
+    () => RemoteDataSourceImpl(sbClient: sl()),
   );
 
   sl.registerLazySingleton<LocalDataSource>(
@@ -46,11 +53,5 @@ Future<void> init() async {
     () => NetworkInfoImpl(sl()),
   );
 
-  // External
-  final sharedPreferences = await SharedPreferences.getInstance();
-  sl.registerLazySingleton(() => sharedPreferences);
-  sl.registerLazySingleton(() => http.Client());
-  sl.registerLazySingleton(() => InternetConnectionChecker.createInstance());
-}
 
-// Use cases
+}

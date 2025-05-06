@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:myprop/data/models/item_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class RemoteDataSource {
   Future<List<ItemModel>> getItems();
@@ -12,49 +12,41 @@ abstract class RemoteDataSource {
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
-  final http.Client client;
+  // final http.Client client;
+  final SupabaseClient sbClient;
   final String baseUrl = '';
   
   RemoteDataSourceImpl({
-    required this.client,
+    required this.sbClient,
   });
-
+  
   @override
   Future<List<ItemModel>> getItems() async {
-    final response = await client.get(
-      Uri.parse('$baseUrl/items'),
-      headers: {'Content-Type': 'application/json'},
-    );
+    // final response = await client.get(
+    //   Uri.parse('$baseUrl/items'),
+    //   headers: {'Content-Type': 'application/json'},
+    // );
     
-    if (response.statusCode ==  200) {
-      final List<dynamic> jsonList = json.decode(response.body);
-      return jsonList.map((json) => ItemModel.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load items');
-    }
+    // if (response.statusCode ==  200) {
+    //   final List<dynamic> jsonList = json.decode(response.body);
+    //   return jsonList.map((json) => ItemModel.fromJson(json)).toList();
+    // } else {
+    //   throw Exception('Failed to load items');
+    // }
+    final response = await sbClient.from('House').select().order('create_at', ascending: false);
+    return (response as List).map((json) => ItemModel.fromJson(json)).toList();
   }
 
   @override
   Future<ItemModel> getItemById(int id) async {
-    final response = await client.get(
-      Uri.parse('$baseUrl/items/$id'),
-      headers: {'Content-Type':'application/json'},
-    );
-
-    if (response.statusCode == 200) {
-      return ItemModel.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load item');
-    }
+    final response = await sbClient.from('House').select().eq('id', id).single();
+    return ItemModel.fromJson(response);
   }
 
   @override
   Future<void> updateItem(ItemModel item) async {
-    final response = await client.put(
-      Uri.parse('$baseUrl/items/${item.id}'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(item.toJson())
-    );
+    final response = await sbClient.from('House').update(item.toJson()).eq('id', item.id);
+      
     
     if (response.statusCode != 200) {
       throw Exception('Failed to update item');
@@ -63,11 +55,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<void> addItem(ItemModel item) async {
-    final response = await client.post(
-      Uri.parse('$baseUrl/items'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(item.toJson()),
-    );
+    final response = await sbClient.from('House').insert(item.toJson());
 
     if (response.statusCode != 200) {
       throw Exception('Failed to add item');
@@ -76,10 +64,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<void> deleteItem(int id) async {
-    final response =  await client.delete(
-      Uri.parse('$baseUrl/items/$id'),
-      headers: {'Content-Type': 'application/json'},
-    );
+    final response =  await sbClient.from('House').delete().eq('id', id);
 
     if (response.statusCode != 200) {
       throw Exception('Failed to delete item');

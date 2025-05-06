@@ -6,6 +6,7 @@ import 'package:myprop/data/datasources/remote_data_source.dart';
 import 'package:myprop/data/models/item_model.dart';
 import 'package:myprop/domain/entities/item.dart';
 import 'package:myprop/domain/repositories/item_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ItemRepositoryImpl implements ItemRepository {
   final RemoteDataSource remoteDataSource;
@@ -59,7 +60,7 @@ class ItemRepositoryImpl implements ItemRepository {
 
   @override
   Future<Either<Failure, void>> updateItem(Item item) async {
-    final itemModel = ItemModel.fromEntiy(item);
+    final itemModel = ItemModel.fromEntity(item);
 
     if (await networkInfo.isConnected) {
       try {
@@ -76,7 +77,7 @@ class ItemRepositoryImpl implements ItemRepository {
   
   @override
   Future<Either<Failure, void>> addItem(Item item) async {
-    final itemModel = ItemModel.fromEntiy(item);
+    final itemModel = ItemModel.fromEntity(item);
 
     if (await networkInfo.isConnected) {
       try {

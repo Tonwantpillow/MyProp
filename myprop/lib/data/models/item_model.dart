@@ -2,32 +2,72 @@ import 'package:myprop/domain/entities/item.dart';
 
 class ItemModel extends Item {
   const ItemModel({
-    required super.id,
-    required super.title,
-    required super.description,
-  });
+    required int id,
+    required DateTime createdAt,
+    required String owner,
+    required String address,
+    required String email,
+    required int currentE,
+    required int currentW,
+  }) : super(
+          id: id,
+          createdAt: createdAt,
+          owner: owner,
+          address: address,
+          email: email,
+          currentE: currentE,
+          currentW: currentW,
+        );
 
   factory ItemModel.fromJson(Map<String, dynamic> json) {
     return ItemModel(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
+      id: json['id'] as int,
+      // Handle both String and DateTime formats for timestampz
+      createdAt: json['created_at'] is DateTime 
+          ? json['created_at'] as DateTime
+          : DateTime.parse(json['created_at'] as String),
+      owner: json['owner'] as String,
+      address: json['address'] as String,
+      email: json['email'] as String,
+      currentE: json['current_e'] as int,
+      currentW: json['current_w'] as int,
     );
   }
-  
+
   Map<String, dynamic> toJson() {
-    return { 
+    return {
       'id': id,
-      'title': title,
-      'description': description,
+      // Convert to ISO 8601 string for Supabase
+      'created_at': createdAt.toUtc().toIso8601String(),
+      'owner': owner,
+      'address': address,
+      'email': email,
+      'current_e': currentE,
+      'current_w': currentW,
     };
   }
 
-  factory ItemModel.fromEntiy(Item item) {
-    return ItemModel (
+  factory ItemModel.fromEntity(Item item) {
+    return ItemModel(
       id: item.id,
-      title: item.title,
-      description: item.description,
+      createdAt: item.createdAt,
+      owner: item.owner,
+      address: item.address,
+      email: item.email,
+      currentE: item.currentE,
+      currentW: item.currentW,
+    );
+  }
+
+   Item toEntity() {
+    return Item(
+      id: id,
+      createdAt: createdAt,
+      owner: owner,
+      address: address,
+      email: email,
+      currentE: currentE,
+      currentW: currentW,
     );
   }
 }

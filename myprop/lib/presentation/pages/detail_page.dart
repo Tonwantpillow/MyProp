@@ -38,12 +38,12 @@ class _DetailPageState extends State<DetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.title,
+                    item.owner,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 16,),
                   Text(
-                    item.description,
+                    item.address,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 32,),

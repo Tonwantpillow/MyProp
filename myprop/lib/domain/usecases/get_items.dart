@@ -11,6 +11,6 @@ class GetItems implements UseCase<List<Item>, NoParams> {
 
   @override
   Future<Either<Failure, List<Item>>> call(NoParams params) async {
-    return repository.getItems();
+    return await repository.getItems();
   }
 }
