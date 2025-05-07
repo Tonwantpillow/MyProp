@@ -16,7 +16,6 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ItemBloc>(context).add(GetItemByIdEvent(widget.itemId));
   }
   
   @override
@@ -64,7 +63,6 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    BlocProvider.of<ItemBloc>(context).add(DeleteItemEvent(item.id));
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                   },

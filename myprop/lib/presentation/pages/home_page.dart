@@ -4,6 +4,7 @@ import 'package:myprop/presentation/bloc/item/item_bloc.dart';
 import 'package:myprop/presentation/bloc/item/item_event.dart';
 import 'package:myprop/presentation/bloc/item/item_state.dart';
 import 'package:myprop/presentation/pages/detail_page.dart';
+import 'package:myprop/presentation/pages/manage_page.dart';
 import 'package:myprop/presentation/widgets/item_widget.dart';
 import 'package:myprop/presentation/widgets/welcome_home.dart';
 
@@ -16,7 +17,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  final pages = [];
+  final pages = [
+    ManagePage(), const Center(child: Text('Favorite')), const Center(child: Text('Settings'),)
+  ];
 
   @override
   void initState() {
@@ -29,60 +32,18 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
       ),
-      body: BlocBuilder<ItemBloc, ItemState>(
-        builder: (context, state) {
-          if (state is ItemLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          else if (state is ItemsLoaded) {
-            if (state.items.isEmpty) {
-              return const Center(child: Text('No items found.'),);
-            } else {
-              return Column(
-                children: [
-                  WelcomeHome(),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: state.items.length,
-                      itemBuilder: (context, index) {
-                        final item = state.items[index];
-                        return ItemWidget(
-                          item: item,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailPage(itemId: item.id),
-                              )
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              );
-            }
-          }
-          else if (state is ItemError) {
-            return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(color: Colors.red),
-              )
-            );
-          }
-          return const Center(child: Text('No items found'),);
-        },
-      ),
+      body: pages[_selectedIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
+          
         },
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: _selectedIndex,
+        onTap: (index) => setState(() {
+          _selectedIndex = index;
+        }),
         items: const [
           BottomNavigationBarItem(icon: Padding(
             padding: EdgeInsets.only(top: 8),
