@@ -29,8 +29,8 @@ class ItemModel extends Item {
       owner: json['owner'] as String,
       address: json['address'] as String,
       email: json['email'] as String,
-      currentE: json['current_e'] as int,
-      currentW: json['current_w'] as int,
+      currentE: json['current-e'] as int,
+      currentW: json['current-w'] as int,
     );
   }
 
@@ -42,8 +42,8 @@ class ItemModel extends Item {
       'owner': owner,
       'address': address,
       'email': email,
-      'current_e': currentE,
-      'current_w': currentW,
+      'current-e': currentE,
+      'current-w': currentW,
     };
   }
 

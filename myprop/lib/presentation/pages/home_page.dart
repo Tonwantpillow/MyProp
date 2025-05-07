@@ -5,6 +5,7 @@ import 'package:myprop/presentation/bloc/item/item_event.dart';
 import 'package:myprop/presentation/bloc/item/item_state.dart';
 import 'package:myprop/presentation/pages/detail_page.dart';
 import 'package:myprop/presentation/widgets/item_widget.dart';
+import 'package:myprop/presentation/widgets/welcome_home.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,6 +15,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+  final pages = [];
+
   @override
   void initState() {
     super.initState();
@@ -24,7 +28,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('MyProp'),
       ),
       body: BlocBuilder<ItemBloc, ItemState>(
         builder: (context, state) {
@@ -35,22 +38,29 @@ class _HomePageState extends State<HomePage> {
             if (state.items.isEmpty) {
               return const Center(child: Text('No items found.'),);
             } else {
-              return ListView.builder(
-                itemCount: state.items.length,
-                itemBuilder: (context, index) {
-                  final item = state.items[index];
-                  return ItemWidget(
-                    item: item,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailPage(itemId: item.id),
-                        )
-                      );
-                    },
-                  );
-                },
+              return Column(
+                children: [
+                  WelcomeHome(),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.items.length,
+                      itemBuilder: (context, index) {
+                        final item = state.items[index];
+                        return ItemWidget(
+                          item: item,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(itemId: item.id),
+                              )
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
               );
             }
           }
@@ -70,6 +80,23 @@ class _HomePageState extends State<HomePage> {
 
         },
         child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        items: const [
+          BottomNavigationBarItem(icon: Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: Icon(Icons.home),
+          ), label: 'Manage'),
+          BottomNavigationBarItem(icon: Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: Icon(Icons.star),
+          ), label: 'Favorites'),
+          BottomNavigationBarItem(icon: Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: Icon(Icons.settings),
+          ), label: 'Settings'),
+        ],
       ),
     );
   }

@@ -33,7 +33,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     // } else {
     //   throw Exception('Failed to load items');
     // }
-    final response = await sbClient.from('House').select().order('create_at', ascending: false);
+    final response = await sbClient.from('House').select().order('created_at', ascending: false);
     return (response as List).map((json) => ItemModel.fromJson(json)).toList();
   }
 
@@ -45,29 +45,16 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<void> updateItem(ItemModel item) async {
-    final response = await sbClient.from('House').update(item.toJson()).eq('id', item.id);
-      
-    
-    if (response.statusCode != 200) {
-      throw Exception('Failed to update item');
-    }
+    await sbClient.from('House').update(item.toJson()).eq('id', item.id);
   }
 
   @override
   Future<void> addItem(ItemModel item) async {
-    final response = await sbClient.from('House').insert(item.toJson());
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to add item');
-    }
+    await sbClient.from('House').insert(item.toJson());
   }
 
   @override
   Future<void> deleteItem(int id) async {
-    final response =  await sbClient.from('House').delete().eq('id', id);
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to delete item');
-    }
+    await sbClient.from('House').delete().eq('id', id);
   }
 }
