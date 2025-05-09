@@ -2,11 +2,13 @@ import 'package:myprop/domain/entities/item.dart';
 
 class ItemModel extends Item {
   const ItemModel({
-    required int id,
-    required DateTime createdAt,
+    int? id,
+    DateTime? createdAt,
     required String owner,
     required String address,
     required String email,
+    required String groupName,
+    required int propNo,
     required int currentE,
     required int currentW,
   }) : super(
@@ -15,6 +17,8 @@ class ItemModel extends Item {
           owner: owner,
           address: address,
           email: email,
+          groupName: groupName,
+          propNo: propNo,
           currentE: currentE,
           currentW: currentW,
         );
@@ -29,6 +33,8 @@ class ItemModel extends Item {
       owner: json['owner'] as String,
       address: json['address'] as String,
       email: json['email'] as String,
+      groupName: json['group_name'] as String,
+      propNo: json['prop_no'] as int,
       currentE: json['current-e'] as int,
       currentW: json['current-w'] as int,
     );
@@ -36,12 +42,11 @@ class ItemModel extends Item {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      // Convert to ISO 8601 string for Supabase
-      'created_at': createdAt.toUtc().toIso8601String(),
       'owner': owner,
       'address': address,
       'email': email,
+      'group_name': groupName,
+      'prop_no': propNo,
       'current-e': currentE,
       'current-w': currentW,
     };
@@ -54,18 +59,22 @@ class ItemModel extends Item {
       owner: item.owner,
       address: item.address,
       email: item.email,
+      groupName: item.groupName,
+      propNo: item.propNo,
       currentE: item.currentE,
       currentW: item.currentW,
     );
   }
 
-   Item toEntity() {
+  Item toEntity() {
     return Item(
       id: id,
       createdAt: createdAt,
       owner: owner,
       address: address,
       email: email,
+      groupName: groupName,
+      propNo: propNo,
       currentE: currentE,
       currentW: currentW,
     );

@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myprop/presentation/bloc/item/item_bloc.dart';
 import 'package:myprop/presentation/bloc/item/item_event.dart';
-import 'package:myprop/presentation/bloc/item/item_state.dart';
-import 'package:myprop/presentation/pages/detail_page.dart';
+import 'package:myprop/presentation/pages/add_prop_page.dart';
 import 'package:myprop/presentation/pages/manage_page.dart';
-import 'package:myprop/presentation/widgets/item_widget.dart';
-import 'package:myprop/presentation/widgets/welcome_home.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,7 +32,7 @@ class _HomePageState extends State<HomePage> {
       body: pages[_selectedIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> AddPropPage()));
         },
         child: const Icon(Icons.add),
       ),

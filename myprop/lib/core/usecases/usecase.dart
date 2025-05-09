@@ -11,3 +11,35 @@ class NoParams extends Equatable {
   List<Object> get props => [];
 }
 
+class AddItemParams extends Equatable {
+  
+  final String owner;
+  final String address;
+  final String email;
+  final int propNo;
+  final String groupName;
+  final int currentE;
+  final int currentW;
+
+  const AddItemParams({
+    required this.owner,
+    required this.address,
+    required this.email,
+    required this.propNo,
+    required this.groupName,
+    required this.currentE,
+    required this.currentW,
+  });
+  
+  @override
+  List<Object> get props => [
+    owner,
+    address,
+    email,
+    propNo,
+    groupName,
+    currentE,
+    currentW,
+    ];
+}
+

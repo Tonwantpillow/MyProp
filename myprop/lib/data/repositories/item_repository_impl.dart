@@ -6,7 +6,6 @@ import 'package:myprop/data/datasources/remote_data_source.dart';
 import 'package:myprop/data/models/item_model.dart';
 import 'package:myprop/domain/entities/item.dart';
 import 'package:myprop/domain/repositories/item_repository.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ItemRepositoryImpl implements ItemRepository {
   final RemoteDataSource remoteDataSource;

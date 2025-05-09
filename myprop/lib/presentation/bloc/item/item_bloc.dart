@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myprop/core/error/failures.dart';
 import 'package:myprop/core/usecases/usecase.dart';
+import 'package:myprop/domain/usecases/add_item.dart';
 import 'package:myprop/domain/usecases/get_item_by_id.dart';
 import 'package:myprop/domain/usecases/get_items.dart';
 import 'package:myprop/presentation/bloc/item/item_event.dart';
@@ -9,13 +10,17 @@ import 'package:myprop/presentation/bloc/item/item_state.dart';
 class ItemBloc extends Bloc<ItemEvent, ItemState> {
   final GetItems getItems;
   final GetItemById getItemById;
+  final AddItem addItem;
+  
 
   ItemBloc({
     required this.getItems,
     required this.getItemById,
+    required this.addItem,
   }) : super(ItemInitial()) {
     on<GetItemsEvent>(_onGetItems);
     on<GetItemByIdEvent>(_onGetItemById);
+    on<AddItemEvent>(_onAddItem);
   }
 
   Future<void> _onGetItems(
@@ -50,6 +55,21 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
       (item) {
         emit(ItemLoaded(item));
       }
+    );
+  }
+
+  Future<void> _onAddItem(
+    AddItemEvent event,
+    Emitter<ItemState> emit,
+  ) async {
+    emit(ItemLoading());
+    final result = await addItem(event.params);
+    result.fold(
+      (failure) {emit(ItemError(_mapFailureToMessage(failure)));},
+      (_) {
+        emit(ItemAdded());
+      }
+
     );
   }
 

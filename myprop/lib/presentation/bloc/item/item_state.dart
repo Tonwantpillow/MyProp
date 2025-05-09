@@ -30,6 +30,8 @@ class ItemLoaded extends ItemState {
   List<Object> get props => [item];
 }
 
+class ItemAdded extends ItemState {}
+
 class ItemError extends ItemState {
   final String message;
 

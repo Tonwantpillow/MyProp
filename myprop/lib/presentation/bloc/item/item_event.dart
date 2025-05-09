@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:myprop/core/usecases/usecase.dart';
 import 'package:myprop/domain/entities/item.dart';
 
 abstract class ItemEvent extends Equatable {
@@ -19,19 +20,15 @@ class GetItemByIdEvent extends ItemEvent {
 }
 
 class AddItemEvent extends ItemEvent {
-  final Item item;
-  
-  const AddItemEvent(this.item);
-  
+  final AddItemParams params;
+  const AddItemEvent(this.params);
   @override
-  List<Object> get props => [item];
+  List<Object> get props => [params];
 }
 
 class UpdateItemEvent extends ItemEvent {
   final Item item;
-
   const UpdateItemEvent(this.item);
-
   @override
   List<Object> get props => [item];
 }

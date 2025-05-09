@@ -50,8 +50,8 @@ class _ManagePageState extends State<ManagePage> {
                           MaterialPageRoute(
                             builder:
                                 (context) => BlocProvider(
-                                  create: (_) => sl<ItemBloc>()..add(GetItemByIdEvent(item.id)),
-                                  child: DetailPage(itemId: item.id),
+                                  create: (_) => sl<ItemBloc>()..add(GetItemByIdEvent(item.id!)),
+                                  child: DetailPage(itemId: item.id!),
                                 ),
                           ),
                         );

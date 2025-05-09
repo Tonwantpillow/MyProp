@@ -9,6 +9,15 @@ class AppTheme {
         bodyLarge: TextStyle(fontSize: 18),
         bodyMedium: TextStyle(fontSize: 16),
         titleLarge: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.green,
+          backgroundColor: Colors.green[50],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(11),
+          )
+        )
       )
     );
   }

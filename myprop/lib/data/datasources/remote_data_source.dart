@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:myprop/data/models/item_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -45,12 +43,23 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<void> updateItem(ItemModel item) async {
-    await sbClient.from('House').update(item.toJson()).eq('id', item.id);
+    await sbClient.from('House').update(item.toJson()).eq('id', item.id as Object);
   }
 
   @override
   Future<void> addItem(ItemModel item) async {
-    await sbClient.from('House').insert(item.toJson());
+    try {
+      final response = await sbClient.from('House').insert(item.toJson());
+
+      if (response.error != null) {
+      print('Error: ${response.error?.message}');
+      throw Exception('Failed to add item');
+      }
+    }
+    catch (e) {
+      print('Exception: $e');
+      throw Exception('Failed to add item');
+    }
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:myprop/data/datasources/local_data_source.dart';
 import 'package:myprop/data/datasources/remote_data_source.dart';
 import 'package:myprop/data/repositories/item_repository_impl.dart';
 import 'package:myprop/domain/repositories/item_repository.dart';
+import 'package:myprop/domain/usecases/add_item.dart';
 import 'package:myprop/domain/usecases/get_item_by_id.dart';
 import 'package:myprop/domain/usecases/get_items.dart';
 import 'package:myprop/presentation/bloc/item/item_bloc.dart';
@@ -18,11 +19,13 @@ Future<void> init() async {
   // Use cases
   sl.registerLazySingleton(() => GetItems(sl()));
   sl.registerLazySingleton(()=> GetItemById(sl()));
+  sl.registerLazySingleton(()=> AddItem(sl()));
   // Bloc
   sl.registerFactory(
     () => ItemBloc(
       getItems: sl<GetItems>(),
       getItemById: sl<GetItemById>(),
+      addItem: sl<AddItem>(),
     ),
   );
 

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class WelcomeHome extends StatelessWidget{
@@ -7,12 +8,24 @@ class WelcomeHome extends StatelessWidget{
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          'Welcome. Ton',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 36,
+        Text.rich(
+          TextSpan(
+            text: 'Welcome,',
+            style: TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
             ),
+            children: <TextSpan>[
+              TextSpan(
+                text: 'Ton',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 36,
+                  color: Colors.blueAccent,
+                )
+              )
+            ]
+          )
         )
       ],
     );
